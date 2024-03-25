@@ -43,7 +43,15 @@ Ce guide vous aidera à mettre en place et à utiliser le projet PHP sur votre e
 
 ### Initialisation :
 
-1. Pour initialiser la base de données Ouvrez votre navigateur Web et accédez à l'URL suivante :
+1. A fin que le code php se connecte bien à votre serveur PostgreSQL modifier les premières lignes dans `connexionDb.php` par vos informations :
+```php
+    $host = "localhost";
+    $dbname = "postgres";
+    $user = "John";
+    $password = "pass";
+```
+
+2. Pour initialiser la base de données Ouvrez votre navigateur Web et accédez à l'URL suivante :
 
    ```
    http://localhost:8000/initDb.php
