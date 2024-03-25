@@ -9,7 +9,7 @@
 $host = "localhost";
 $dbname = "postgres";
 $user = "bkaii";
-$password = ",Interstellar123,";
+$password = "password";
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);

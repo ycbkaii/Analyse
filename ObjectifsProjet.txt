@@ -1,0 +1,53 @@
+- .bib n'importe source en .bib propre
+
+- evaluer la qualite du chercheur (en fonction fréquence de publication, etc..) avec note A+, A, B+, etc...
+    -> soit compté le nombre d'article où la personne se trouve en auteur dans la dernière année (chaque aticle est noté par le plus au rang de conférence avec lequel il est associé sinon "N/A")
+       on donne un rang à l'auteur en int et pour chaque article de l'auteur en fonctione du rang de l'article le rang de l'auteur change
+       , un article de rang A vaut 8 celui de B vaut 4 celui de C vaut 2 et D 1 ou N/A  et faire l'addition de la valeur de tout les articles pour donner le score à l'auteur   le A+ vaut 3 pt de plus que A b+ 2pt en plus aussi et C+ vaut 1pts de plus
+
+- direction recherche : soit pouvoir dire quel sujet est exploré ou non (beaucoup de sujet ou pas)
+    -> soit compté le nombre de résultat pour la requête 
+
+(comment construire une bibliographie)
+
+Qui a étudier avec qui dans quel endroit à l'instant T (difficile)
+
+https://www.core.edu.au/conference-portal
+
+Nous analyserons les données recueillies pour déterminer 
+si la présence d'un groupe de chercheurs influence de manière significative 
+l'acceptation des sujets présentés lors de conférences bien classées.
+(si les groupes de chercheur on tendance à avoir accès à des conférence de rang supérieur contrairement au chercheur seul 
+qui pourrait avoir plus de difficulté).
+
+RECHERCHE : 
+- Intro
+    - Etude
+    - Pb (précis)
+    - Solution Valide
+    - Ens.
+-Conclusion
+
+
+
+Dans l'étude : 
+Un résumé
+intro
+proposition
+bibliothèque
+
+-> submit to ACM 6-8 pages
+
+
+Intro
+    Contexte
+    Problème
+    Limites
+    Proposition
+    Plan
+Background (élements que l'on a pris, j'ai pas trop saisie cette partie)
+Contribution (ce qu'on a apporté pour résoudre le "problème" de ce que j'ai compris)
+Validation (de quoi appuier notre sujet je crois)
+(RW) Related Work (les travaux similaire qui traitent le même sujet mais qui ne vont pas aussi loin que nous ou un truc comme ça)
+Conclusion
+

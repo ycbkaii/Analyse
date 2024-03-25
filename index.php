@@ -8,13 +8,17 @@
 require_once "./connexionDb.php";
 global $conn;
 
-if(isset($_GET['title'])){
+//On mentionne qu'on est dans la section de recherche d'études
+$mention = 'Études';
 
+if(isset($_GET['title'])){
+    try{
     //On récupere le titre
     $titre = $_GET['title'];
 
     $api = "https://dblp.org/search/publ/api?q=".urlencode($titre)."&format=json";
 
+    
 
     //On récupere avec l'API la recherche en JSON
     $f = file_get_contents($api);
@@ -22,7 +26,9 @@ if(isset($_GET['title'])){
 
     //On récupere le tableau des résultats (hits)
     $dataHits = (isset($data['result']['hits']['hit']) ? $data['result']['hits']['hit'] : []);
-
+    }catch(Exception $e){
+        echo "oups Recharge la page :/";
+    }
 }
 ?>
 
@@ -131,6 +137,12 @@ if(isset($_GET['title'])){
     <input type="text" name="title" placeholder="Rechercher un titre ici">
     <button type='submit'>Rechercher</button>
 </form>
+
+<form action="conf.php">
+    <button class='button' type='button' style='color:blue;'><?=$mention?></button>
+    <button class='button' type='submit'>Conférences</button>
+    <button class='button' type='button' onclick="window.location.href='notreAnalyse.php'">Notre Analyse</button>
+</form>
 <?php
 if(isset($titre)){
 
@@ -141,6 +153,7 @@ if(isset($titre)){
             <th>Type</th>
             <th>Doi</th>
             <th>Title</th>
+            <th>Auteurs</th>
             <th>Venue</th>
             <th>Year</th>
             <th>Pages</th>
@@ -153,33 +166,57 @@ if(isset($titre)){
         <tbody>
             
             <?php
+            $idConf = 'NULL';
             foreach($dataHits as $hit){
                 
-                //On fait un script pour vérifier que l'id de l'article  n'est pas déjà dans la BDD
-                $queryVerif = "SELECT iddblp FROM  projet_api_data._article WHERE iddblp = ".$hit['@id'];
-                $resultVerif = pg_query($conn, $queryVerif);
-                $dataVerif = pg_fetch_assoc($resultVerif);
-                if(!$dataVerif){
+                // //On fait un script pour vérifier que l'id de l'article  n'est pas déjà dans la BDD
+                // $queryVerif = "SELECT iddblp FROM  projet_api_data._article WHERE iddblp = ".$hit['@id'];
+                // $resultVerif = pg_query($conn, $queryVerif);
+                // $dataVerif = pg_fetch_assoc($resultVerif);
+                // if(!$dataVerif){
 
-                    if(isset($hit['info']['volume']) && !is_numeric($hit['info']['volume'])){
-                        $hit['info']['volume'] = "NULL";
-                    }
+                //     if(isset($hit['info']['volume']) && !is_numeric($hit['info']['volume'])){
+                //         $hit['info']['volume'] = "NULL";
+                //     }
+
+                //     //On regarde si un article fait partie d'une conférence
+                //     $queryConf = "SELECT idcomptage FROM projet_api_data._conf WHERE POSITION(UPPER(title) IN UPPER('".$hit['info']['title']."')) > 0";
+                //     $resConf = pg_query($conn, $queryConf);
+                //     $data = pg_fetch_assoc($resConf);
+                //     if($data != false){
+                //         $idConf = $data['idcomptage'];
+                        
+                //     }
                     
-                    //On fait une insertion dans la BDD
-                    $insertArticle = "INSERT INTO projet_api_data._article VALUES 
-                    (".(isset($hit['@id']) ? $hit['@id'] : 'NULL').",'".(isset($hit['info']['type']) ? $hit['info']['type'] : 'NULL')."','".(isset($hit['info']['doi']) ? $hit['info']['doi'] : 'NULL')."','".(isset($hit['info']['title']) ? $hit['info']['title'] : 'NULL')."','".(isset($hit['info']['venue']) ? $hit['info']['venue'] : 'NULL')."',".(isset($hit['info']['year']) ? $hit['info']['year'] : 'NULL').",'".(isset($hit['info']['pages']) ? $hit['info']['pages'] : 'NULL')."','".(isset($hit['info']['ee']) ? $hit['info']['ee'] : 'NULL')."','".(isset($hit['info']['url']) ? $hit['info']['url'] : 'NULL')."',".(isset($hit['info']['number']) ? $hit['info']['number'] : 'NULL').",".(isset($hit['info']['volume']) ? $hit['info']['volume'] : 'NULL').")";
-                    $resultInsertArt = pg_query($conn, $insertArticle);
+                //     //On fait une insertion dans la BDD
+                //     $insertArticle = "INSERT INTO projet_api_data._article VALUES 
+                //     (".(isset($hit['@id']) ? $hit['@id'] : 'NULL').",'".(isset($hit['info']['type']) ? $hit['info']['type'] : 'NULL')."','".(isset($hit['info']['doi']) ? $hit['info']['doi'] : 'NULL')."','".(isset($hit['info']['title']) ? $hit['info']['title'] : 'NULL')."','".(isset($hit['info']['venue']) ? json_encode($hit['info']['venue']) : 'NULL')."',".(isset($hit['info']['year']) ? $hit['info']['year'] : 'NULL').",'".(isset($hit['info']['pages']) ? $hit['info']['pages'] : 'NULL')."','".(isset($hit['info']['ee']) ? $hit['info']['ee'] : 'NULL')."','".(isset($hit['info']['url']) ? $hit['info']['url'] : 'NULL')."',".(isset($hit['info']['number']) ? $hit['info']['number'] : 'NULL').",".(isset($hit['info']['volume']) ? $hit['info']['volume'] : 'NULL').",".$idConf.")";
+                //     $resultInsertArt = pg_query($conn, $insertArticle);
 
 
-                }
-
+                // }
+                
+            if(isset($hit['info']['authors']['author']['@pid']) || isset($hit['info']['authors']['author'])){
             ?>
             <tr>
                 <td><?=$hit['@id']?></td>
                 <td><?=(isset($hit['info']['type']) ? $hit['info']['type'] : 'NULL')?></td>
                 <td><?=(isset($hit['info']['doi']) ? $hit['info']['doi'] : 'NULL')?></td>
                 <td><?=(isset($hit['info']['title']) ? $hit['info']['title'] : 'NULL')?></td>
-                <td><?=(isset($hit['info']['venue']) ? $hit['info']['venue'] : 'NULL')?></td>
+                <td>
+                <?php
+                    if(!isset($hit['info']['authors']['author']['@pid'])){
+                        foreach($hit['info']['authors']['author'] as $auteur){
+                            
+                              echo "<a href=\"getAuthorbib.php?pid={$auteur['@pid']}\"> {$auteur['text']}, </a>";
+                        }
+                    }else{
+                        echo $hit['info']['authors']['author']['text'];
+                    }
+                    
+                ?>
+                </td>
+                <td><?=(isset($hit['info']['venue']) && !is_array($hit['info']['venue']) ? $hit['info']['venue'] : 'NULL')?></td>
                 <td><?=(isset($hit['info']['year']) ? $hit['info']['year'] : 'NULL')?></td>
                 <td><?=(isset($hit['info']['pages']) ? $hit['info']['pages'] : 'NULL')?></td>
                 <td><?=(isset($hit['info']['ee']) ? $hit['info']['ee'] : 'NULL')?></td>
@@ -211,12 +248,13 @@ if(isset($titre)){
                 
             <td>
             <form action="getBibTex.php" method='get'>
-                <button class='button' type='submit' name='bibtex' value="<?=$hit['@id']?>">Obtenir</button>
+                <button class='button' type='submit' name='bibtex' value="<?=$hit['info']['title']?>">Obtenir</button>
             </form>
             </td>
             </tr>
 
             <?php
+            }
             }
             ?>
             
