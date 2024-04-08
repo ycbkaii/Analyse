@@ -30,7 +30,7 @@
 
 function xml2JsonByPid($pid){
     
-    $url = "https://dblp.org/pid/$pid.xml";
+    $url = "https://dblp.org/pid/".urlencode($pid).".xml";
 
     $xml_content = file_get_contents($url);
     try {
@@ -183,7 +183,7 @@ while($row = pg_fetch_assoc($resultConf_)){
         }
     
     
-    sleep(5);
+    sleep(10);
 
     //TODO Mettre peuplement dans le SCRIPT conf.php quand la personne recherche la conf, insert les autheurs et leur pid et les associations entre autheurs et article si ils n'éxiste pas déjà
 

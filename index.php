@@ -208,7 +208,7 @@ if(isset($titre)){
                     if(!isset($hit['info']['authors']['author']['@pid'])){
                         foreach($hit['info']['authors']['author'] as $auteur){
                             
-                              echo "<a href=\"getAuthorbib.php?pid={$auteur['@pid']}\"> {$auteur['text']}, </a>";
+                              echo "<a href=\"https://dblp.org/pid/{$auteur['@pid']}.bib\"> {$auteur['text']}, </a>";
                         }
                     }else{
                         echo $hit['info']['authors']['author']['text'];

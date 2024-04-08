@@ -43,7 +43,7 @@ Intro
     Contexte
     Problème
     Limites
-    Proposition
+    Proposition ( de contribution)
     Plan
 Background (élements que l'on a pris, j'ai pas trop saisie cette partie)
 Contribution (ce qu'on a apporté pour résoudre le "problème" de ce que j'ai compris)
@@ -51,3 +51,9 @@ Validation (de quoi appuier notre sujet je crois)
 (RW) Related Work (les travaux similaire qui traitent le même sujet mais qui ne vont pas aussi loin que nous ou un truc comme ça)
 Conclusion
 
+
+
+15mins présentation + 5mins Questions (j'ai pas tout les éléments): 
+    contexte
+    contribution
+    Conclusion
