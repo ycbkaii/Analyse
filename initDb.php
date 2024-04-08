@@ -5,7 +5,7 @@
  * @author Yanis Chiouar, Baron Noah
  * @api dblp.org
  */
-/*
+
 require_once "./connexionDb.php";
 global $conn;
 
@@ -118,6 +118,6 @@ if(!$result){
     die("Erreur lors de la création de la base de données, vérifiez si la base de données PG est co : ".pg_last_error());
 }
 
-*/
+
 
 ?>
